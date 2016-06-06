@@ -1,0 +1,20 @@
+td {
+  background: white;
+  width: 20px;
+  height: 20px;
+
+}
+
+.empty{
+
+  background: white;
+}
+
+#playfield{
+  margin:50px auto;
+}
+
+body{
+
+  background: #E7E7E7;
+}
