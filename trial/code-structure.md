@@ -35,11 +35,21 @@
     4.1 Stop when reaches the bottom line
         4.1.2 check each coordinates , if any row of them >last row no., store it
     4.2 Stop when reaches another Tetriminos
-        4.2.1 for each row of the coordinates, check whether
+        4.2.1 for each coordinates, check the row and repective col is occupy or not
+        4.2.2 if yes, move -- when move ++
+                      move ++ when move --
 
 5. Scoring
     5.1 Lines finished
        5.1.2 Clear lines when the whole row is full
+          5.1.2.1 Construct an object to store the occurence of col in each row from the stored arrays of objects
+          5.1.2.2 Filter the object keys with value with 10 (10 cols are all full)
+          5.1.2.3 Extract the respective keys as number
+          5.1.2.4 Remove the objects in the stored field with respective row no.
+          5.1.2.5 For objects with row no. removed -1, row coordinates +1
+          5.1.2.6 lines finished +1 , update info
+
+
     5.2 Each down movement + 5 scores
 
 6. Game Over
