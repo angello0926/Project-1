@@ -1,6 +1,6 @@
 $(document).ready(function(){
 
-var colorpalette=["#EE5F5B","#F89406","#FFDE49","#55C34D","#1ABC9C","#36C4D0","#8B4D93"];
+var colorpalette=["#EE5F5B","#F89406","#FFDE49","#7A922D","#6BB18C","#36C4D0","#8B4D93"];
 
 var tetris={};
 
@@ -234,15 +234,15 @@ function fillshape(currshape,currentcoor,color,field){
   var tocolor='';
   if(color!==true){
     switch (currshape){
-      case'LR':
+      case'LR':  case'LR90':  case'LR180': case'LR270':
       tocolor=colorpalette[0];
       break;
 
-      case'LL':
+      case'LL': case'LL90': case'LL180': case'LL270':
       tocolor=colorpalette[1];
       break;
 
-      case'I':
+      case'I': case'I90':
       tocolor=colorpalette[2];
       break;
 
@@ -250,15 +250,15 @@ function fillshape(currshape,currentcoor,color,field){
       tocolor=colorpalette[3];
       break;
 
-      case'T':
+      case'T': case'T90': case'T180': case'T270':
       tocolor=colorpalette[4];
       break;
 
-      case'ZL':
+      case'ZL': case'ZL90':
       tocolor=colorpalette[5];
       break;
 
-      case'ZR':
+      case'ZR': case'ZR90':
       tocolor=colorpalette[6];
       break;
 
@@ -282,14 +282,23 @@ function move (direction){
   switch(direction){
     case 'right':
     tetris.origin.col++;
+    tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+    if(checkfieldlimit()){
+      tetris.origin.col--;
+    }
     break;
 
     case 'left':
     tetris.origin.col--;
+    tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+     if(checkfieldlimit()){
+      tetris.origin.col++;
+    }
     break;
   }
-
+  checkend();
   tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+  console.log(tetris.currentcoor);
   fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
 
 
@@ -301,6 +310,7 @@ function move (direction){
 function rotate(){
 
  fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
+ var originalshape = tetris.currshape;
   if (tetris.currshape==='I'){
     tetris.currshape ='I90';
   }else if (tetris.currshape==='I90'){
@@ -348,33 +358,55 @@ function rotate(){
   }
 
   tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+  if(checkfieldlimit()){
+   tetris.currenshape = originalshape;
+   tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+  }
   fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
-
 };
 
 
 //3.3 Down
 function down(){
-  var block= false;
+
   fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
   tetris.origin.row++;
   tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+  checkend ();
+  fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
 
+
+};
+
+
+function checkend (){
+  var block= false; //whether it reaches the end
   for (i=0;i<tetris.currentcoor.length;i++){
-      if (tetris.currentcoor[i].row>18||detection(tetris.currentcoor)===1){
+      if (tetris.currentcoor[i].row>18||detection(tetris.currentcoor)===1){ //if any coordinates with row>18 or any coordinates have the same coords as the shapes stored,
       block=true;
     }
   };
 
   if (block===true){
-    storeshape(tetris.currentcoor);
-    randomshapes();
+    storeshape(tetris.currentcoor); //reach the end, then store the shape
+    randomshapes(); //generate new shape
    }
 
-  fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+};
 
+function checkfieldlimit(){
+  var limit=false;
+  for (i=0;i<tetris.currentcoor.length;i++){
+    if(tetris.currentcoor[i].col<0||tetris.currentcoor[i].col>9){
+      limit=true;
+    }
+  };
+
+  return limit;
 
 };
+
+
 
 
 function storeshape(currentcoor){

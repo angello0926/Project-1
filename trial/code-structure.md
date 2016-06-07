@@ -16,7 +16,7 @@
     2.2 Coordinates
     2.3 Shapes
         2.3.1 7 types of shapes and its coordinate (take in the origin and the shape, return 4 coordinates in an array)
-        2.3.2 Randomize the shapes
+        2.3.2 Randomize the shapes and color
     2.4 Fill Color
         2.4.1 Take in the coordinates and color , change the respective coordinates's css attributes.
 
@@ -25,6 +25,7 @@
     3.2 Rotate
         3.2.1 Rotate based on the shapes rotation
     3.3 Down
+    3.4 Make sure it moves within the field
 
 4. Tetriminos Stacking
     4.1 Stop when reaches the bottom line
