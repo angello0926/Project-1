@@ -1,20 +1,21 @@
 td {
-  background: white;
-  width: 20px;
-  height: 20px;
+  background: #ECF0F1;
+  width: 30px;
+  height: 30px;
+  border: solid 2px white ;
 
-}
-
-.empty{
-
-  background: white;
 }
 
 #playfield{
-  margin:50px auto;
+  width: auto;
+  height: auto;
+  margin: 10px auto;
+
+
 }
 
-body{
-
-  background: #E7E7E7;
+.row{
+  height: auto;
+  background: white;
 }
+

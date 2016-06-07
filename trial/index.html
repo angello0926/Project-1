@@ -3,21 +3,48 @@
   <head>
     <title>Tetris.js</title>
     <link rel="stylesheet" type="text/css" href="./tetris.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-    <script src='./trial.js'></script>
+    <script src='./trytry.js'></script>
   </head>
 
 
 
   <body>
-    <table id='playfield'></table>
+    <div class="row">
+      <div class="col-sm-4 col-sm-offset-2">
+         <table id='playfield'></table>
+      </div>
+      <div class="col-sm-4">
+         <div class="row">
+           <div class="col-sm-12">
+             <h4><span id="playerA">Player A</span>  V.S. <span id="playerB">Player B</span></h4>
 
+           </div>
+
+           <div class="col-sm-12">
+             <h4>Lines accomplished: <span id="linesdone">5</span></h4>
+           </div>
+
+           <div class="col-sm-12">
+             <h4>Scores: <span id="scores">10</span></h4>
+           </div>
+
+           <div class="col-sm-12">
+             <h4>What's next:</h4>
+           </div>
+
+           <div class="col-sm-12">
+             <table id='nextfield'></table>
+           </div>
+
+
+
+         </div>
+
+      </div>
+    <div>
   </body>
-
-
-
-
-
 
 
 </html>

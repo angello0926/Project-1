@@ -12,9 +12,9 @@ tetris.currshape='O';
 tetris.storefield=[];
 
 function grid(){
-    for (var i=0;i<19;i++){
+    for (var i=0;i<20;i++){
       $('#playfield').append('<tr data-row='+i+'></tr>'); //define row
-      for (var j=0;j<9;j++){
+      for (var j=0;j<10;j++){
          $('[data-row='+i+']').append('<td data-col='+j+'></td>'); //define column
       };
     };
@@ -55,9 +55,8 @@ function down(){
   };
 
   if (block===true){
-    storeshape();
+    storeshape(tetris.currentcoor);
     newshape();
-    fillshape(tetris.currentcoor,'#EEE657');
    }
 
   console.log(tetris.currentcoor);
@@ -66,7 +65,7 @@ function down(){
 
 
 function storeshape(currentcoor){ //to check whether they can be stored
-  tetris.storefield.push(tetris.currentcoor);
+  tetris.storefield.push(currentcoor);
   for (var i=0; i<tetris.storefield.length; i++){
     fillshape(tetris.storefield[i],'#EEE657');
   };
@@ -79,12 +78,11 @@ function detection(currentcoor){
     for (var i=0;i<tetris.storefield.length;i++){
       for (var j=0;j<tetris.storefield[i].length;j++){
         if ((tetris.storefield[i][j].row)===(square.row)){
-          amerow=1;
+          samerow=1;
         }
-
         if (samerow===1){
           if ((tetris.storefield[i][j].col)===(square.col)){
-            samecol=1;
+           samecol=1;
           }
         }
       };
@@ -96,7 +94,8 @@ function detection(currentcoor){
 
 function newshape(){
   var origin ={row:0,col:5};
-  tetris.currentcoor=translateshape(tetris.currentshape,origin);
+  tetris.currentcoor=translateshape(tetris.currshape,origin);
+  fillshape(tetris.currentcoor,'#EEE657');
 };
 
 
