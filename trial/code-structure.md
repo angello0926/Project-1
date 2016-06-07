@@ -1,20 +1,29 @@
 
 1. Start
     1.1 Player 1/2
-        1.1.2 Enter Name
+        1.1.2 Enter both Name
     1.2 Clear field and previous data
     1.3 Draw field
 
+2. Player Info:
+   2.1 Player1 Name V.S. Player2 Name
+   2.2 Lines FInished
+   2.3 Scores:
+   2.4 Next shape
 
 2. Define Tetriminos
     2.1 Origin
     2.2 Coordinates
     2.3 Shapes
+        2.3.1 7 types of shapes and its coordinate (take in the origin and the shape, return 4 coordinates in an array)
+        2.3.2 Randomize the shapes
     2.4 Fill Color
+        2.4.1 Take in the coordinates and color , change the respective coordinates's css attributes.
 
 3. Tetriminos Movement
     3.1 Right/Left
     3.2 Rotate
+        3.2.1 Rotate based on the shapes rotation
     3.3 Down
 
 4. Tetriminos Stacking
