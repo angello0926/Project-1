@@ -107,7 +107,7 @@ function shape(shape,origin){  //update coordinates whenever the shape has chang
     return [ {row:origin.row,col:origin.col},
              {row:origin.row-1,col:origin.col},
              {row:origin.row-2,col:origin.col},
-             {row:origin.row-3,col:origin.col}];
+             {row:origin.row+1,col:origin.col}];
     break;
 
   case 'I90':
@@ -346,6 +346,7 @@ function randomshapes(){
   tetris.currentshape=shapesoptions[choice];
   tetris.origin = {row:0,col:5};
   tetris.currentCoor=shape(tetris.currentshape,tetris.origin);
+
 
 };
 

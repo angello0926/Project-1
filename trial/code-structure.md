@@ -10,6 +10,10 @@
    2.2 Lines FInished
    2.3 Scores:
    2.4 Next shape
+       2.4.1 start with a default next shape in the next field
+       2.4.2 when the current shape reaches the end, current shape = the next shape in the next field
+       2.4.3 generate a new next shape
+
 
 2. Define Tetriminos
     2.1 Origin
@@ -29,7 +33,9 @@
 
 4. Tetriminos Stacking
     4.1 Stop when reaches the bottom line
+        4.1.2 check each coordinates , if any row of them >last row no., store it
     4.2 Stop when reaches another Tetriminos
+        4.2.1 for each row of the coordinates, check whether
 
 5. Scoring
     5.1 Lines finished

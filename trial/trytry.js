@@ -13,6 +13,7 @@ tetris.currentcoor = [ {row:'',col:''},
                        {row:'',col:''} ];
 //2.3 Shapes
 tetris.currshape='LR';
+tetris.nextshape='';
 
 
 //create an array to store moves
@@ -122,17 +123,17 @@ function translateshape(shape,origin){
     case 'I':
 
     return [ {row:origin.row,col:origin.col},
-            {row:origin.row-1,col:origin.col},
-            {row:origin.row-2,col:origin.col},
-            {row:origin.row-3,col:origin.col}];
+            {row:origin.row+1,col:origin.col},
+            {row:origin.row+2,col:origin.col},
+            {row:origin.row-1,col:origin.col}];
     break;
 
     case 'I90':
 
     return [ {row:origin.row,col:origin.col},
+            {row:origin.row,col:origin.col-1},
             {row:origin.row,col:origin.col+1},
-            {row:origin.row,col:origin.col+2},
-            {row:origin.row,col:origin.col+3}];
+            {row:origin.row,col:origin.col+2}];
     break;
 
 
@@ -222,18 +223,16 @@ function translateshape(shape,origin){
 function randomshapes(){
   var choice=Math.floor(Math.random()*7);
   var shapesoptions=['LR','LL','I','O','T','ZL','ZR'];
-  tetris.currshape=shapesoptions[choice];
-  tetris.origin = {row:0,col:5};
-  tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
 
+  return shapesoptions[choice];
 };
 
 //2.4 Fill Color
 //2.4.1 Take in the coordinates and color , change the respective coordinates's css attributes.
-function fillshape(currshape,currentcoor,color,field){
+function fillshape(shape,coor,color,field){
   var tocolor='';
-  if(color!==true){
-    switch (currshape){
+  if(color!==true){ //when color is not '';
+    switch (shape){
       case'LR':  case'LR90':  case'LR180': case'LR270':
       tocolor=colorpalette[0];
       break;
@@ -265,15 +264,11 @@ function fillshape(currshape,currentcoor,color,field){
       };
   }
 
-  for (var i=0;i<currentcoor.length;i++){
-    $('.'+field+'[data-row='+currentcoor[i].row+']').find('.'+field+'[data-col='+currentcoor[i].col+']').css('background',tocolor);
+  for (var i=0;i<coor.length;i++){
+    $('.'+field+'[data-row='+coor[i].row+']').find('.'+field+'[data-col='+coor[i].col+']').css('background',tocolor);
     };
 };
 
-//set up the initial shape
-tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
-console.log(tetris.currentcoor);
-fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
 
 //3. Tetriminos Movement
 //3.1 move Right/Left
@@ -359,7 +354,7 @@ function rotate(){
 
   tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
   if(checkfieldlimit()){
-   tetris.currenshape = originalshape;
+   tetris.currshape = originalshape;
    tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
   }
   fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
@@ -382,14 +377,20 @@ function down(){
 function checkend (){
   var block= false; //whether it reaches the end
   for (i=0;i<tetris.currentcoor.length;i++){
-      if (tetris.currentcoor[i].row>18||detection(tetris.currentcoor)===1){ //if any coordinates with row>18 or any coordinates have the same coords as the shapes stored,
+      if (tetris.currentcoor[i].row>18||detection(tetris.currentcoor)===0){ //if any coordinates with row>18 or any coordinates have the same coords as the shapes stored,
       block=true;
     }
   };
 
   if (block===true){
     storeshape(tetris.currentcoor); //reach the end, then store the shape
-    randomshapes(); //generate new shape
+    //generate new shape in the next move field
+    tetris.currshape=tetris.nextshape;
+    tetris.origin={row:0,col:5};
+    tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+    console.log(tetris.currentcoor);
+    tetris.nextshape=randomshapes();
+    shownextmove(tetris.nextshape);
    }
 
 };
@@ -407,17 +408,20 @@ function checkfieldlimit(){
 };
 
 
-
-
 function storeshape(currentcoor){
   tetris.storefield.push(currentcoor);
+  console.log(tetris.storefield);
   for (var i=0; i<tetris.storefield.length; i++){
-    fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+    for (var j=0;j<tetris.storefield[i].length;j++){
+      $('.playfield[data-row='+tetris.storefield[i][j].row+']').find('.playfield[data-col='+tetris.storefield[i][j].col+']').css('background','black');
+    };
   };
 };
 
+
+
 function detection(currentcoor){
-  var samecol=0; // samecol= false
+  var samecol=1; // samecol= false
   var samerow=0; //same row = false
   currentcoor.forEach(function(square){
     for (var i=0;i<tetris.storefield.length;i++){
@@ -426,8 +430,8 @@ function detection(currentcoor){
           samerow=1;
         }
         if (samerow===1){
-          if ((tetris.storefield[i][j].col)===(square.col)){
-           samecol=1;
+          if ((tetris.storefield[i][j].col)!==(square.col)){
+           samecol=0;
           }
         }
       };
@@ -436,7 +440,18 @@ function detection(currentcoor){
   return samecol;
 };
 
+function shownextmove(nextshape){
 
+  var origin= {row:2,col:2};
+  var nextcoord = [ {row:'',col:''},
+                     {row:'',col:''},
+                     {row:'',col:''},
+                     {row:'',col:''} ];
+  $('.nextfield').css('background','#ECF0F1');
+  nextcoord=translateshape(nextshape,origin);
+  fillshape(nextshape,nextcoord,false,"nextfield");
+
+};
 
 
 $(document).keydown(function(e){
@@ -454,5 +469,16 @@ $(document).keydown(function(e){
   }
 
 });
+
+ //set up the initial shape
+tetris.nextshape=randomshapes();
+shownextmove(tetris.nextshape);
+tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
+fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+
+
+
+
+
 
 });
