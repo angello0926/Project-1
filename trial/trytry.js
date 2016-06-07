@@ -290,7 +290,7 @@ function move (direction){
     tetris.origin.col--;
     tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
      if(checkfieldlimit()){ //check whether it is out of field
-      tetris.origin.col++;
+    tetris.origin.col++;
     }
     break;
   }
@@ -418,11 +418,12 @@ function storeshape(currentcoor){
 
   for (var i=0; i<currentcoor.length;i++){
     tetris.storefield.push(currentcoor[i]);
+
   };
 
   console.log(tetris.storefield);
   for (var i=0;i<tetris.storefield.length;i++){
-      $('.playfield[data-row='+tetris.storefield[i].row+']').find('.playfield[data-col='+tetris.storefield[i].col+']').css('background','black');
+      $('.playfield[data-row='+tetris.storefield[i].row+']').find('.playfield[data-col='+tetris.storefield[i].col+']').css('background','#043D5D');
   };
 
 
@@ -434,7 +435,15 @@ function detection(currentcoor){
 var samecol = 0; // samecol= false
   var samerow = 0; //same row = false
   var counter=0;
-  currentcoor.forEach(function(square){
+
+  for (var i=0;i<currentcoor.length;i++){
+   if($('.playfield[data-row='+(currentcoor[i].row+1)+']').find('.playfield[data-col='+currentcoor[i].col+']').css('background-color')==='rgb(4, 61, 93)'){
+     counter=1;
+   }
+  };
+
+ /* currentcoor.forEach(function(square){
+
     for (var i=0;i<tetris.storefield.length;i++){
         if ((tetris.storefield[i].row)===(square.row)){
           samerow=1;
@@ -450,10 +459,13 @@ var samecol = 0; // samecol= false
    });
 
   if (samecol===1&&samerow===1){
-    counter=1;
-
-  }
+    counter++;
+    for(var i=0;i<currentcoor.length;i++){
+     currentcoor[i].row--;
+    };
+  }*/
   return counter;
+
 };
 
 
