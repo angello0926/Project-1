@@ -2,7 +2,7 @@ $(document).ready(function(){
   var gameloop = null;
 
   var colorpalette=["#EE5F5B","#F89406","#FFDE49","#7A922D","#6BB18C","#36C4D0","#8B4D93"];
-
+  var defaultcolor="#ECF0F1";
   var tetris={
     scores:      0,
     playerA:     'Angel',
@@ -27,8 +27,18 @@ $(document).ready(function(){
       $('#'+field).append('<tr class='+field+' data-row='+i+'></tr>'); //define row
       for (var j=0;j<fieldcoor.col;j++){
         $('.'+field+'[data-row='+i+']').append('<td class='+field+ ' data-col='+j+'></td>'); //define column
-      };
-    };
+      }
+    }
+  }
+
+  function createField(fieldcoor){
+    for (var i=0;i<fieldcoor.row;i++){
+      var row = [];
+      for (var j=0;j<fieldcoor.col;j++){
+        row.push(null);
+      }
+      tetris.storefield.push(row);
+    }
   }
 
   // ==================
@@ -201,6 +211,48 @@ $(document).ready(function(){
     };
   }
 
+
+
+  function colorstorefield(){
+    for (var i=0; i<tetris.storefield.length;i++){
+      for (var j=0;j<tetris.storefield[i].length;j++){
+        var $row=$('.playfield'+'[data-row='+i+']');
+        var $col=$('.playfield'+'[data-col='+j+']');
+        if ($($row).find($col).hasClass('occupy')===false){
+          $($row).find($col).css('background',defaultcolor);
+        }
+        if ($($row).find($col).hasClass('LR')||$($row).find($col).hasClass('LR90')||$($row).find($col).hasClass('LR180')||$($row).find($col).hasClass('LR270')){
+          $($row).find($col).css('background',colorpalette[0]);
+        }
+
+        if ($($row).find($col).hasClass('LL')||$($row).find($col).hasClass('LL90')||$($row).find($col).hasClass('LL180')||$($row).find($col).hasClass('LL270')){
+          $($row).find($col).css('background',colorpalette[1]);
+        }
+
+        if ($($row).find($col).hasClass('I')||$($row).find($col).hasClass('I90')){
+          $($row).find($col).css('background',colorpalette[2]);
+        }
+
+        if ($($row).find($col).hasClass('O')){
+          $($row).find($col).css('background',colorpalette[3]);
+        }
+
+        if ($($row).find($col).hasClass('T')||$($row).find($col).hasClass('T90')||$($row).find($col).hasClass('T180')||$($row).find($col).hasClass('T270')){
+          $($row).find($col).css('background',colorpalette[4]);
+        }
+
+        if ($($row).find($col).hasClass('ZL')||$($row).find($col).hasClass('ZL90')){
+          $($row).find($col).css('background',colorpalette[5]);
+        }
+
+        if ($($row).find($col).hasClass('ZR')||$($row).find($col).hasClass('ZR90')){
+          $($row).find($col).css('background',colorpalette[6]);
+        }
+
+      }
+    }
+
+  }
   //3. Tetriminos Movement
   //3.1 move Right/Left
   function move (direction){
@@ -292,10 +344,10 @@ $(document).ready(function(){
 
   //3.3 Down
   function down(){
+    checkend ();
     fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
     tetris.origin.row++;
     tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
-    checkend ();
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   };
 
@@ -314,11 +366,12 @@ $(document).ready(function(){
 
     if (block===true){
       storeshape(tetris.currentcoor); //reach the end, then store the shape
+      clearlines();
+      gameover();
       //generate new shape in the next move field and the playfield
       tetris.currshape=tetris.nextshape;
       tetris.origin={row:0,col:5};
       tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
-      console.log(tetris.currentcoor);
       tetris.nextshape=randomshapes();
       shownextmove(tetris.nextshape);
     }
@@ -337,20 +390,16 @@ $(document).ready(function(){
   }
 
   function storeshape(currentcoor){
-    tetris.storefield.push(currentcoor);
-
-    for (var i=0; i<tetris.storefield.length; i++){
-      fillshape(tetris.storefield[i],'#EEE657');
-      fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+    for (var i=0; i<currentcoor.length; i++){
+      var coor   = currentcoor[i];
+      var row    = coor.row;
+      var col    = coor.col;
+      tetris.storefield[row][col] = tetris.currshape;
+      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass('occupy');
+      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass(tetris.currshape);
     }
+    colorstorefield();
 
-    gameover(currentcoor);
-
-    for (var i=0; i<tetris.storefield.length; i++){
-     for (var j=0;j<tetris.storefield[i].length;j++){
-        $('.playfield[data-row='+tetris.storefield[i][j].row+']').find('.playfield[data-col='+tetris.storefield[i][j].col+']').addClass('occupy');
-      }
-    }
   }
 
   function detection(currentcoor){
@@ -398,9 +447,7 @@ $(document).ready(function(){
       if (e.keyCode===40){
         e.preventDefault();
         console.log(e.keyCode)
-        stopInterval()
         down();
-        startInterval();
         scores();
       }else if (e.keyCode===39){
         console.log(e.keyCode)
@@ -414,56 +461,71 @@ $(document).ready(function(){
     });
   }
 
-  function gameover(currentcoor){
-    for (var i=0;i<currentcoor.length;i++){
-      if (currentcoor[i].row===0) console.log('gameover');
+  function gameover(){
+    for (var i=0;i<tetris.storefield[0].length;i++){
+      if (tetris.storefield[0][i]!==null)
+        {clearInterval(gameloop);
+          console.log('gameover');}
     }
-  }
-
-  function showrowtoremove(obj, objectName) {
-    var rowtoremove = [];
-    for (var prop in obj) {
-      if(counter[prop]>=10) rowtoremove.push(prop);
-    }
-    return rowtoremove;
   }
 
   function clearlines(){
-    var counter={};
-    var rowtoremove=[];
-    for (var i=0;i<tetris.storefield.length;i++){
-      if (counter[tetris.storefield[i].row]===undefined) counter[tetris.storefield[i].row]=0;
-      counter[tetris.storefield[i].row]++;
-    }
+    var field = tetris.storefield;
+    var rowToRemove = [];
+    var remove=0;
 
-    console.log(counter);
-    // 5.1.2.1 Construct an object to store the occurence of col in each row from the stored arrays of objects
-    //extract the row no. to be removed
-
-    var removerow=showrowtoremove(counter, "counter");
-    console.log(removerow);
-
-    var times=tetris.storefield.length;
-    for (var i =0; i <tetris.storefield.length; i++){
-      if (tetris.storefield[i]!==undefined){
-        if (tetris.storefield[i].row === parseInt(removerow[0])){
-        console.log('tetris.storefield[i] ='+tetris.storefield[i]);
-        tetris.storefield.splice(i,1);
-         $('.playfield[data-row='+tetris.storefield[i].row+']').find('td').removeClass('occupy');
-         console.log('length='+tetris.storefield.length);
+    for (var row = 0; row < field.length; row++) {
+      var countCells = 0;
+      for (var col = 0; col < field[row].length; col++) {
+        countCells += field[row][col] ? 1 : 0; //check each col, if not null, count+1
+        if (countCells === tetris.playfield.col){ //if count=10, row is full
+          rowToRemove.push(row); //store the full row into the rowToRemove arr
+          console.log(rowToRemove);
+          remove=1;
         }
       }
-    };
+    }
+    if (remove===1){ //loop through the rows to be deleted //[18] -->row full
+      for (var i=0; i<rowToRemove.length;i++){ // i=0
+        tetris.storefield.splice(rowToRemove[i],1); //remove the row in the stored field
+      } //for each col, change back the class field to default
 
-    console.log('length='+tetris.storefield.length);
 
-    return tetris.storefield;
+      var rowadd = [];
+      for (var j=0;j<tetris.playfield.col;j++){
+        rowadd.push(null);
+      }
+      tetris.storefield.splice(0,0,rowadd);
+
+      for (var i=0;i<tetris.storefield.length;i++){
+        for (var j=0;j<tetris.storefield[i].length;j++){
+          $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').removeClass().addClass('playfield');
+          var classname=tetris.storefield[i][j];
+          if(classname!==null) $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').removeClass().addClass('playfield occupy '+classname);
+        }
+      }
+
+      console.log(tetris.storefield);
+      for (var i=0;i<tetris.storefield.length;i++){
+        for (var j=0;j<tetris.storefield[i];j++){
+          $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').css('background',defaultcolor);
+        }
+      }
+      debugger;
+      colorstorefield();
+    }
   }
 
+
   function startGame(){
+    // generate field
+    createField(tetris.playfield);
+
     // setup initial field
     grid(tetris.playfield,'playfield');
     grid(tetris.nextfield,'nextfield');
+
+    window.tetris = tetris;
     // bind keys
     bindKeys();
     // set up the initial shape
