@@ -1,7 +1,7 @@
 td {
   background: #ECF0F1;
-  width: 30px;
-  height: 30px;
+  width: 25px;
+  height: 25px;
   border: solid 2px white ;
 
 }
@@ -9,25 +9,25 @@ td {
 #playfield{
   width: auto;
   height: auto;
-  margin: 10px auto;
+  margin: 20px auto;
 
 }
 
 #nextfield{
  width: auto;
   height: auto;
-
+  border: 5px solid #ECF0F1;
 }
 
-.row{
-  height: auto;
-  background: white;
-}
+
 
 .format{
-  height:200px;
+  height:50px;
 }
 
 .font{
-  font-family: 'Montserrat', sans-serif;
+  font-family: 'Arya', sans-serif;
+  color: 'black';
+
 }
+

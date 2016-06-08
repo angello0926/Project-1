@@ -415,8 +415,21 @@ function checkfieldlimit(){
 
 
 function storeshape(currentcoor){
+  tetris.storefield.push(currentcoor);
+    for (var i=0; i<tetris.storefield.length; i++){
+      fillshape(tetris.storefield[i],'#EEE657');
+      fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+  };
+  gameover(currentcoor);
+  for (var i=0; i<tetris.storefield.length; i++){
+   for (var j=0;j<tetris.storefield[i].length;j++){
+      $('.playfield[data-row='+tetris.storefield[i][j].row+']').find('.playfield[data-col='+tetris.storefield[i][j].col+']').addClass('occupy');
+    };
+  };
 
-  for (var i=0; i<currentcoor.length;i++){
+};
+
+ /* for (var i=0; i<currentcoor.length;i++){
     tetris.storefield.push(currentcoor[i]);
 
   };
@@ -425,23 +438,27 @@ function storeshape(currentcoor){
   for (var i=0;i<tetris.storefield.length;i++){
       $('.playfield[data-row='+tetris.storefield[i].row+']').find('.playfield[data-col='+tetris.storefield[i].col+']').css('background','#043D5D');
   };
+  */
 
 
-};
 
 
 
 function detection(currentcoor){
 var samecol = 0; // samecol= false
-  var samerow = 0; //same row = false
-  var counter=0;
+var samerow = 0; //same row = false
+var counter=0;
+for (var i=0;i<currentcoor.length;i++){
+    if($('.playfield[data-row='+(currentcoor[i].row+1)+']').find('.playfield[data-col='+currentcoor[i].col+']').hasClass('occupy'))
+     counter=1;
+    };
 
-  for (var i=0;i<currentcoor.length;i++){
+ /* for (var i=0;i<currentcoor.length;i++){
    if($('.playfield[data-row='+(currentcoor[i].row+1)+']').find('.playfield[data-col='+currentcoor[i].col+']').css('background-color')==='rgb(4, 61, 93)'){
      counter=1;
    }
   };
-
+  */
  /* currentcoor.forEach(function(square){
 
     for (var i=0;i<tetris.storefield.length;i++){
@@ -507,18 +524,13 @@ $(document).keydown(function(e){
 });
 
 
-/*function gameover(){
-  var over='';
-
-  for (var i=0; i<tetris.col;i++){
-    over=;
-    //console.log(over);
-    if (over==='black'){
-      console.log('gameover');
+function gameover(currentcoor){
+  for (var i=0;i<currentcoor.length;i++){
+    if (currentcoor[i].row===0) console.log('gameover');
      }
   };
-};
-*/
+
+
 
 function clearlines(){
   var counter={};
