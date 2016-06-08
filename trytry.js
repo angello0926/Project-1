@@ -488,14 +488,13 @@ $(document).ready(function(){
     if (remove===1){ //loop through the rows to be deleted //[18] -->row full
       for (var i=0; i<rowToRemove.length;i++){ // i=0
         tetris.storefield.splice(rowToRemove[i],1); //remove the row in the stored field
-      } //for each col, change back the class field to default
-
-
-      var rowadd = [];
-      for (var j=0;j<tetris.playfield.col;j++){
-        rowadd.push(null);
+       //for each col, change back the class field to default
+        var rowadd = [];
+        for (var j=0;j<tetris.playfield.col;j++){
+          rowadd.push(null);
+        }
+        tetris.storefield.splice(0,0,rowadd);
       }
-      tetris.storefield.splice(0,0,rowadd);
 
       for (var i=0;i<tetris.storefield.length;i++){
         for (var j=0;j<tetris.storefield[i].length;j++){
@@ -504,14 +503,14 @@ $(document).ready(function(){
           if(classname!==null) $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').removeClass().addClass('playfield occupy '+classname);
         }
       }
-
+      debugger;
       console.log(tetris.storefield);
       for (var i=0;i<tetris.storefield.length;i++){
-        for (var j=0;j<tetris.storefield[i];j++){
+        for (var j=0;j<tetris.storefield[i].length;j++){
           $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').css('background',defaultcolor);
         }
       }
-      debugger;
+
       colorstorefield();
     }
   }
