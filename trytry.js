@@ -34,6 +34,7 @@ $(document).ready(function(){
 
   var turn=0;
   var gameover=0;
+  var winner='';
 
   // ==================
   //       Music
@@ -533,11 +534,27 @@ $(document).ready(function(){
         }
         resetvalue();
         setinitialshapes();
-      }
-    if(turn===3&&playerB.playing==0&&playerA.playing===0){
+     if(turn===3 && playerB.playing==0 && playerA.playing===0){
       hidegame();
-
+      $('button').hide();
+      $('.hide').removeClass('hide');
+      winners();
+      return;
     }
+  }
+  }
+
+  function winners(){
+    if (playerA.lines>playerB.lines){
+      winner= "Player A";
+    }else if (playerB.lines>playerA.lines){
+       winner= "Player B";
+    }else{
+      winner="NO ONE";
+    }
+      $('.endgame').append("<div><h4> No. of trees planted by Player A: <span>"+playerA.lines+"</span></h4></div>");
+      $('.endgame').append("<div><h4> No. of trees planted by Player B: <span>"+playerB.lines+"</span></h4></div>");
+      $('.endgame').append("<div><h4><span>"+winner+"</span> WTINS!</h4></div>");
   }
 
   function clearlines(){
@@ -655,7 +672,15 @@ var right=40;
 
   function startGame(){
     $('button').show();
+    $('[data-toggle="tooltip"]').tooltip();
     $( "button" ).click(function(){
+      if (playerA.playing===1){
+        $('#player').text('Player A');
+      }
+      if (playerB.playing===1){
+        $('#player').text('Player B');
+      }
+
       resetvalue();
       setinitialshapes();
       playAudio();

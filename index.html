@@ -6,7 +6,8 @@
     <link href='https://fonts.googleapis.com/css?family=Arya:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="./tetris.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
     <script src='./trytry.js'></script>
   </head>
 
@@ -30,7 +31,7 @@
               </div>
 
               <div class="col-sm-12 info">
-              <h3 class=font><span class=font id="player">Player A</span> , FIGHTING! </h3>
+              <h3 class=font><span class=font id="player"></span> , FIGHTING! </h3>
               </div>
 
               <div class="col-sm-12 info">
@@ -50,8 +51,12 @@
                </div>
             </div>
           </div>
-           <div class="col-sm-12 button"><button type="button" class="btn btn-danger">Start</button></div>
-           <div class="nextplayer hide">Now, it's the next player turn</div>
+           <div class="col-sm-12 button"><button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Click here to start game!">Start</button></div>
+           <div class="hide ">
+            <h3>This is the end of the game!</h3>
+            <div class="endgame end"></div>
+
+            </div>
           </div>
         </div>
     <div class="row">

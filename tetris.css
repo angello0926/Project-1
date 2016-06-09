@@ -65,3 +65,17 @@ height:50px;
     font-size:24px;
     text-transform: uppercase;
 }
+
+h3{
+  color: white;
+}
+
+.end{
+  text-align: center;
+  background: #ECF0F1;
+  font-family: 'Arial Black', sans-serif;
+  font-transform: uppercase;
+  margin: 20px auto;
+
+}
+
