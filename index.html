@@ -2,57 +2,69 @@
 <html>
   <head>
     <title>Tetris.js</title>
-    <link rel="stylesheet" type="text/css" href="./tetris.css">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-   <link href='https://fonts.googleapis.com/css?family=Arya:400,700' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Arya:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="./tetris.css">
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
     <script src='./trytry.js'></script>
   </head>
 
 
 
   <body>
+
+<audio id="bgmusic">
+  <source src="./bgmusic.wav" type="audio/wav">
+
+</audio>
+
     <div class="row">
-      <div class="col-sm-4 col-sm-offset-2">
-         <table id='playfield'></table>
-      </div>
       <div class="col-sm-4">
-         <div class="row">
-             <div class="col-sm-12 info">
-             <h3 class=font><span class=font id="playerA">Player A</span>  V.S. <span class=font id="playerB">Player B</span></h3>
-
-           </div>
-          <div class="col-sm-12 format">
-
-          </div>
-
-            <div class="col-sm-12 info">
-             <h3 class=font><span class=font id="player">Player A</span> , FIGHTING! </h3>
-
-           </div>
-
-           <div class="col-sm-12 info">
-             <h4 class=font>Lines accomplished: <span id="linesdone">5</span></h4>
-           </div>
-
-           <div class="col-sm-12 info">
-             <h4 class=font>Scores: <span class=font id="scores">0</span></h4>
-           </div>
-
-           <div class="col-sm-12 info">
-             <h4 class=font>What's next:</h4>
-           </div>
-
-           <div class="col-sm-12">
-             <table id='nextfield'></table>
-           </div>
-
-
-
-         </div>
+        <div class="row">
+        <div class="col-sm-4 tree"><img src="./trees.png" ></div>
+        </div>
 
       </div>
-    <div>
+
+      <div class="col-sm-4">
+        <div class="row">
+          <div class="col-sm-8">
+              <table id='playfield'></table>
+          </div>
+          <div class="col-sm-4">
+            <div class="row">
+              <div class="col-sm-12 format">
+              </div>
+
+              <div class="col-sm-12 info">
+              <h3 class=font><span class=font id="player">Player A</span> , FIGHTING! </h3>
+              </div>
+
+              <div class="col-sm-12 info">
+               <h4 class=font>Lines done: <span id="linesdone">0</span></h4>
+              </div>
+
+              <div class="col-sm-12 info">
+               <h4 class=font>Scores: <span class=font id="scores">0</span></h4>
+              </div>
+
+              <div class="col-sm-12 info">
+               <h4 class=font>What's next:</h4>
+               </div>
+
+               <div class="col-sm-12">
+               <table id='nextfield'></table>
+               </div>
+            </div>
+          </div>
+           <div class="col-sm-12 button"><button type="button" class="btn btn-danger">Start</button></div>
+          </div>
+        </div>
+
+
+  </div>
+
   </body>
 
 
