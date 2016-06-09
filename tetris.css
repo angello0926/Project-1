@@ -9,7 +9,7 @@ td {
 #playfield{
   width: auto;
   height: auto;
-  margin: 150px 0px auto;
+  margin: 120px 0px auto;
 
 }
 
@@ -22,7 +22,7 @@ td {
 
 
 .format{
-  height:150px;
+  height:120px;
 }
 
 .font{
@@ -35,7 +35,6 @@ body{
    background-image: url('./background.svg');
    background-size: cover;
    background-position: fixed;
-   position: relative;
 
 
 }
@@ -47,13 +46,7 @@ body{
 
 }
 
-.tree{
 
-  position: absolute;
-  top: 500px;
-  left:30px;
-
-}
 
 .button{
   margin:50px;

@@ -6,8 +6,6 @@ $(document).ready(function(){
   var tetris={
     scores:      0,
     lines:       0,
-    playerA:     1,
-    playerB:     0,
     origin:      {row:0,col:5}, //2.1 Origin
     currentcoor: [ //2.2 Coordinates
       {row:'',col:''},
@@ -19,17 +17,23 @@ $(document).ready(function(){
     nextshape:   '', //2.3 Shapes
     storefield:  [], //create an array to store moves
     playfield:   {row:20,col:10}, //define field
-    nextfield:   {row:5,col:5}, //define field
+    nextfield:   {row:5,col:5} //define field
   };
+
   var playerA={
     scores: 0,
     lines: 0,
+    playing: 0
   };
 
   var playerB={
     scores: 0,
     lines: 0,
+    playing:0
   };
+
+  var turn=0;
+  var gameover=0;
 
   // ==================
   //       Music
@@ -188,8 +192,7 @@ $(document).ready(function(){
                 {row:origin.row+1,col:origin.col+1},
                 {row:origin.row,col:origin.col+1}];
         break;
-
-    }
+    };
   }
 
   //2.3.2 Randomize the shapes
@@ -232,50 +235,44 @@ $(document).ready(function(){
 
     for (var i=0;i<coor.length;i++){
       $('.'+field+'[data-row='+coor[i].row+']').find('.'+field+'[data-col='+coor[i].col+']').css('background',tocolor);
-    };
+    }
   }
 
 
 
   function colorstorefield(){
-    for (var i=0; i<tetris.storefield.length;i++){
-      for (var j=0;j<tetris.storefield[i].length;j++){
-        var $row=$('.playfield'+'[data-row='+i+']');
-        var $col=$('.playfield'+'[data-col='+j+']');
-        if ($($row).find($col).hasClass('occupy')===false){
-          $($row).find($col).css('background',defaultcolor);
+    if(tetris.storefield!==undefined){
+      for (var i=0; i<tetris.storefield.length;i++){
+        for (var j=0;j<tetris.storefield[i].length;j++){
+          var $row=$('.playfield'+'[data-row='+i+']');
+          var $col=$('.playfield'+'[data-col='+j+']');
+          if ($($row).find($col).hasClass('occupy')===false){
+            $($row).find($col).css('background',defaultcolor);
+          }
+          if ($($row).find($col).hasClass('LR')||$($row).find($col).hasClass('LR90')||$($row).find($col).hasClass('LR180')||$($row).find($col).hasClass('LR270')){
+            $($row).find($col).css('background',colorpalette[0]);
+          }
+          if ($($row).find($col).hasClass('LL')||$($row).find($col).hasClass('LL90')||$($row).find($col).hasClass('LL180')||$($row).find($col).hasClass('LL270')){
+            $($row).find($col).css('background',colorpalette[1]);
+          }
+          if ($($row).find($col).hasClass('I')||$($row).find($col).hasClass('I90')){
+            $($row).find($col).css('background',colorpalette[2]);
+          }
+          if ($($row).find($col).hasClass('O')){
+            $($row).find($col).css('background',colorpalette[3]);
+          }
+          if ($($row).find($col).hasClass('T')||$($row).find($col).hasClass('T90')||$($row).find($col).hasClass('T180')||$($row).find($col).hasClass('T270')){
+            $($row).find($col).css('background',colorpalette[4]);
+          }
+          if ($($row).find($col).hasClass('ZL')||$($row).find($col).hasClass('ZL90')){
+            $($row).find($col).css('background',colorpalette[5]);
+          }
+          if ($($row).find($col).hasClass('ZR')||$($row).find($col).hasClass('ZR90')){
+            $($row).find($col).css('background',colorpalette[6]);
+          }
         }
-        if ($($row).find($col).hasClass('LR')||$($row).find($col).hasClass('LR90')||$($row).find($col).hasClass('LR180')||$($row).find($col).hasClass('LR270')){
-          $($row).find($col).css('background',colorpalette[0]);
-        }
-
-        if ($($row).find($col).hasClass('LL')||$($row).find($col).hasClass('LL90')||$($row).find($col).hasClass('LL180')||$($row).find($col).hasClass('LL270')){
-          $($row).find($col).css('background',colorpalette[1]);
-        }
-
-        if ($($row).find($col).hasClass('I')||$($row).find($col).hasClass('I90')){
-          $($row).find($col).css('background',colorpalette[2]);
-        }
-
-        if ($($row).find($col).hasClass('O')){
-          $($row).find($col).css('background',colorpalette[3]);
-        }
-
-        if ($($row).find($col).hasClass('T')||$($row).find($col).hasClass('T90')||$($row).find($col).hasClass('T180')||$($row).find($col).hasClass('T270')){
-          $($row).find($col).css('background',colorpalette[4]);
-        }
-
-        if ($($row).find($col).hasClass('ZL')||$($row).find($col).hasClass('ZL90')){
-          $($row).find($col).css('background',colorpalette[5]);
-        }
-
-        if ($($row).find($col).hasClass('ZR')||$($row).find($col).hasClass('ZR90')){
-          $($row).find($col).css('background',colorpalette[6]);
-        }
-
       }
     }
-
   }
   //3. Tetriminos Movement
   //3.1 move Right/Left
@@ -288,7 +285,7 @@ $(document).ready(function(){
         if(checkfieldlimit()||detectright()){
           tetris.origin.col--;
           tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
-      }
+         }
         break;
       case 'left':
         tetris.origin.col--;
@@ -301,7 +298,7 @@ $(document).ready(function(){
     }
     checkend(); //whether it reaches an end
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield"); //fill color
-  };
+  }
 
   //3.2 Rotate
   //3.2.1 Rotate based on the shapes rotation
@@ -354,7 +351,7 @@ $(document).ready(function(){
     if (tetris.currshape==='ZL'){
       tetris.currshape ='ZL90';
     }else if (tetris.currshape==='ZL90'){
-      tetris.currenshape ='ZL';
+      tetris.currshape ='ZL';
     }
 
     tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
@@ -369,13 +366,12 @@ $(document).ready(function(){
 
   //3.3 Down
   function down(){
-    gameover();
     checkend ();
     fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
     tetris.origin.row++;
     tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
-  };
+  }
 
   function checkend (){
     var block= false; //whether it reaches the end
@@ -388,7 +384,7 @@ $(document).ready(function(){
     if (block===true){
       storeshape(tetris.currentcoor); //reach the end, then store the shape
       clearlines();
-      gameover();
+      checkgameover();
       //generate new shape in the next move field and the playfield
       tetris.currshape=tetris.nextshape;
       tetris.origin={row:0,col:5};
@@ -420,7 +416,7 @@ $(document).ready(function(){
       $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass(tetris.currshape);
     }
     colorstorefield();
-
+    checkgameover();
   }
 
   function detectdown(currentcoor){
@@ -503,19 +499,44 @@ $(document).ready(function(){
     });
   }
 
-  function gameover(){
+  function checkgameover(){
+    var gameover=0;
     for (var i=0;i<tetris.storefield[0].length;i++){
-      if (tetris.storefield[0][i]!==null&&tetris.storefield[1][i]!==null)
-        {clearInterval(gameloop);
-          console.log('gameover');
-        hidegame();
-        stopAudio();
-         $('button').show();
-      playerA.scores=tetris.scores;
-      playerA.lines=tetris.lines;
-      console.log(playerA.scores);
-      console.log(playerA.lines);
+      if (tetris.storefield[0][i]!==null&&tetris.storefield[1][i]!==null){
+        gameover=1;
       }
+    }
+      console.log('turn='+turn);
+      if (gameover===1){
+        clearInterval(gameloop);
+        stopAudio();
+        $('button').show();
+        console.log('gameover');
+        turn++;
+
+        console.log('turn='+turn);
+       if(turn===1 && playerA.playing===1){
+          playerA.scores=tetris.scores;
+          playerA.lines=tetris.lines;
+          console.log('playAscores:'+playerA.scores);
+          console.log('playAliness:'+playerA.lines);
+          playerA.playing=0;
+          playerB.playing=1;
+          return;
+       }else if(turn===3&&playerB.playing===1){
+          playerB.scores=tetris.scores;
+          playerB.lines=tetris.lines;
+          console.log('turn='+turn);
+          console.log('playAscores:'+playerB.scores);
+          console.log('playAliness:'+playerB.lines);
+          playerB.playing=0;
+        }
+        resetvalue();
+        setinitialshapes();
+      }
+    if(turn===3&&playerB.playing==0&&playerA.playing===0){
+      hidegame();
+
     }
   }
 
@@ -532,6 +553,7 @@ $(document).ready(function(){
           rowToRemove.push(row); //store the full row into the rowToRemove arr
           console.log(rowToRemove);
           tetris.lines++;
+          planttrees();
           scores(10);
           $('#linesdone').text(tetris.lines);
           remove=1;
@@ -566,6 +588,23 @@ $(document).ready(function(){
       colorstorefield();
     }
   }
+var top=-60;
+var left =40;
+var right=40;
+
+
+  function planttrees(){
+    if(playerA.playing===1){
+    $('.trees').append('<img src="./trees.png" style="position:absolute; top: '+top+'px; left:'+left+'px;" >');
+    left+=20;
+    }
+
+    if(playerB.playing===1){
+    $('.trees').append('<img src="./trees_B.png" style="position:absolute; top: '+top+'px; right:'+right+'px;" >');
+    right+=20;
+    }
+
+  }
 
   function hidegame(){
     $('.playfield').hide();
@@ -580,11 +619,9 @@ $(document).ready(function(){
   }
 
   function resetvalue(){
-  tetris={
+    tetris={
     scores:      0,
     lines:       0,
-    playerA:     0,
-    playerB:     0,
     origin:      {row:0,col:5}, //2.1 Origin
     currentcoor: [ //2.2 Coordinates
       {row:'',col:''},
@@ -594,39 +631,44 @@ $(document).ready(function(){
     ],
     currshape:   'LR', //2.3 Shapes
     nextshape:   '', //2.3 Shapes
-    storefield:  [], //create an array to store moves
+    storefield:   [],
     playfield:   {row:20,col:10}, //define field
-    nextfield:   {row:5,col:5}, //define field
-  };
+    nextfield:   {row:5,col:5} //define field
+   };
+    $('#playfield').html('');
+    $('#nextfield').html('');
+    createField(tetris.playfield);
+    grid(tetris.playfield,'playfield');
+    grid(tetris.nextfield,'nextfield');
+    $('#scores').text(tetris.scores);
+    $('#linesdone').text(tetris.lines);
+    colorstorefield();
 
   }
 
-
-  function startGame(){
-    // generate field
-
-    //set up inital value
-    $( "button" ).click(function() {
-      playAudio();
-      showgame();
-      startInterval();
-      $('button').hide();
-
-    });
-    createField(tetris.playfield);
-    // setup initial field
-    grid(tetris.playfield,'playfield');
-    grid(tetris.nextfield,'nextfield');
-    window.tetris = tetris;
-    // bind keys
-    bindKeys();
-    // set up the initial shape
+  function setinitialshapes(){
     tetris.nextshape=randomshapes();
     shownextmove(tetris.nextshape);
     tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
+  }
+
+  function startGame(){
+    $('button').show();
+    $( "button" ).click(function(){
+      resetvalue();
+      setinitialshapes();
+      playAudio();
+      showgame();
+      startInterval();
+      $('button').hide();
+    });
+    playerA.playing=1;
+    window.tetris = tetris;
+    // bind keys
+    bindKeys();
+    // set up the initial shape
     hidegame();
-    // start game loop
   }
   startGame();
 });
