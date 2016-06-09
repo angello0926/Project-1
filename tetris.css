@@ -66,16 +66,19 @@ height:50px;
     text-transform: uppercase;
 }
 
-h3{
-  color: white;
+h2{
+  text-align: center;
+  color: #42787A;
+  text-transform: uppercase;
 }
 
 .end{
   text-align: center;
   background: #ECF0F1;
   font-family: 'Arial Black', sans-serif;
-  font-transform: uppercase;
-  margin: 20px auto;
+  text-transform: uppercase;
+  padding-top:20px;
+  padding-bottom: 20px;
 
 }
 

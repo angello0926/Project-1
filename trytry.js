@@ -539,6 +539,7 @@ $(document).ready(function(){
       $('button').hide();
       $('.hide').removeClass('hide');
       winners();
+      $('.trees').addClass('hide');
       return;
     }
   }
@@ -552,9 +553,9 @@ $(document).ready(function(){
     }else{
       winner="NO ONE";
     }
-      $('.endgame').append("<div><h4> No. of trees planted by Player A: <span>"+playerA.lines+"</span></h4></div>");
-      $('.endgame').append("<div><h4> No. of trees planted by Player B: <span>"+playerB.lines+"</span></h4></div>");
-      $('.endgame').append("<div><h4><span>"+winner+"</span> WTINS!</h4></div>");
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player A: <span>"+playerA.lines+"</span></h4></div>");
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player B: <span>"+playerB.lines+"</span></h4></div>");
+      $('.endgame').append("<div class='end'><h4><span>"+winner+"</span> WINS!</h4></div>");
   }
 
   function clearlines(){
