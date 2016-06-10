@@ -511,12 +511,12 @@ $(document).ready(function(){
       if (gameover===1){
         clearInterval(gameloop);
         stopAudio();
-        $('button').show();
         console.log('gameover');
         turn++;
 
         console.log('turn='+turn);
        if(turn===1 && playerA.playing===1){
+         $('#taketurn').modal('show');
           playerA.scores=tetris.scores;
           playerA.lines=tetris.lines;
           console.log('playAscores:'+playerA.scores);
@@ -553,9 +553,11 @@ $(document).ready(function(){
     }else{
       winner="NO ONE";
     }
-      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player A: <span>"+playerA.lines+"</span></h4></div>");
-      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player B: <span>"+playerB.lines+"</span></h4></div>");
-      $('.endgame').append("<div class='end'><h4><span>"+winner+"</span> WINS!</h4></div>");
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player A: </h4></div>");
+      $('.endgame').append("<div class='end number'>"+playerA.lines+'</div>');
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player B: </h4></div>");
+      $('.endgame').append("<div class='end number'>"+playerB.lines+'</div>');
+      $('.endgame').append("<div class='end winner'><h4><span>"+winner+"</span> WINS!</h4></div>");
   }
 
   function clearlines(){
@@ -687,7 +689,7 @@ var right=40;
       playAudio();
       showgame();
       startInterval();
-      $('button').hide();
+      $('.btn-danger').hide();
     });
     playerA.playing=1;
     window.tetris = tetris;

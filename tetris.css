@@ -58,7 +58,7 @@ body{
 }
 
 
-button{
+.btn-danger{
 width: 300px;
 height:50px;
 
@@ -76,12 +76,33 @@ h2{
 }
 
 .end{
-  text-align: center;
+
   background: #ECF0F1;
-  font-family: 'Arial Black', sans-serif;
+  filter: alpha(opacity=70);
+  font-family: 'Arya', sans-serif;
   text-transform: uppercase;
-  padding-top:20px;
-  padding-bottom: 20px;
+  padding: 5px 10px 5px 10px;
+  font-weight: bold;
 
 }
 
+.gameover{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  background: #FC575E;
+  color: white;
+}
+
+.penal-heading{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  background: #FCB410;
+  color: white;
+}
+
+.number{
+  font-family: "Impact", sans-serif;
+  font-size: 24px;
+}
