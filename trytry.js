@@ -608,7 +608,7 @@ $(document).ready(function(){
       colorstorefield();
     }
   }
-var bottom=3;
+var bottom=50;
 var left =60;
 var right=60;
 
