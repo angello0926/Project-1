@@ -606,19 +606,19 @@ $(document).ready(function(){
       colorstorefield();
     }
   }
-var top=-60;
+var bottom=3;
 var left =40;
 var right=40;
 
 
   function planttrees(){
     if(playerA.playing===1){
-    $('.trees').append('<img src="./trees.png" style="position:absolute; top: '+top+'px; left:'+left+'px;" >');
+    $('.trees').append('<img src="./trees.png" style="position:absolute; bottom: '+bottom+'%; left:'+left+'px;" >');
     left+=20;
     }
 
     if(playerB.playing===1){
-    $('.trees').append('<img src="./trees_B.png" style="position:absolute; top: '+top+'px; right:'+right+'px;" >');
+    $('.trees').append('<img src="./trees_B.png" style="position:absolute;  bottom: '+bottom+'%; right:'+right+'px;" >');
     right+=20;
     }
 
