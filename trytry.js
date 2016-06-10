@@ -609,8 +609,8 @@ $(document).ready(function(){
     }
   }
 var bottom=3;
-var left =40;
-var right=40;
+var left =60;
+var right=60;
 
 
   function planttrees(){
