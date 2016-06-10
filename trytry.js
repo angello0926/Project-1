@@ -676,7 +676,7 @@ var right=40;
   function startGame(){
     $('button').show();
     $('[data-toggle="tooltip"]').tooltip();
-    $( "button" ).click(function(){
+    $( ".startgame" ).click(function(){
       if (playerA.playing===1){
         $('#player').text('Player A');
       }
@@ -690,6 +690,7 @@ var right=40;
       showgame();
       startInterval();
       $('.btn-danger').hide();
+      $('.btn-info').hide();
     });
     playerA.playing=1;
     window.tetris = tetris;

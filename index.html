@@ -32,19 +32,19 @@
           <p>Please click "Start" button again to start planting your Tetris Tree!</p>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-default startgame" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
   </div>
-</div>
 
     <div class="row">
       <div class="col-sm-4 col-sm-offset-4">
-        <div class="row">
+          <div class="row">
           <div class="col-sm-8" style="position: relative;">
               <table id='playfield'></table>
           </div>
+
           <div class="col-sm-4">
             <div class="row">
               <div class="col-sm-12 format">
@@ -72,8 +72,27 @@
             </div>
           </div>
 
-           <div class="col-sm-12 button"><button type="button" class="btn btn-danger" data-toggle="tooltip" data-placement="bottom" title="Click here to start game!">Start</button></div>
-          </div>
+        <div class="col-sm-8 col-sm-offset-4  button"><button type="button" class="btn btn-danger startgame" data-toggle="tooltip" data-placement="bottom" title="Click here to start game!">Start</button></div>
+            <div class="col-sm-8 col-sm-offset-4 button"><button type="button" class="btn btn-info " data-toggle="modal" data-target="#instruction">Instruction</button></div>
+
+            <div class="modal fade" id="instruction" role="dialog">
+              <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Instruction</h4>
+                  </div>
+                  <div class="modal-body">
+                    <img src="./instruction.svg">
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+
           <div class="row hide ">
               <div class="col-sm-12">
                  <div class="panel-group">
@@ -101,6 +120,15 @@
             </div>
         </div>
         </div>
+
+          </div>
+        </div>
+
+
+
+
+
+
     <div class="row">
     <div class="col-sm-12 trees">
 
