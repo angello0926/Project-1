@@ -39,6 +39,11 @@ $(document).ready(function(){
   var turn                 = 0 ;
   var gameover             = 0 ;
   var winner               = '' ;
+  var bottom_a             = -10 ;
+  var bottom_b             = -10 ;
+  var left                 = 30 ;
+  var right                = 30 ;
+
 
   // ==================
   //       Music
@@ -54,6 +59,8 @@ $(document).ready(function(){
  function stopAudio() {
     x.pause();
   }
+
+
 
   // ===========================
   //       Create Fields
@@ -219,6 +226,8 @@ $(document).ready(function(){
   // ===========================
   //          Coloring
   // ===========================
+
+
   function fillshape(shape,coor,color,field){
     var tocolor='';
     if(color!==true){ //when color is not '';
@@ -246,11 +255,11 @@ $(document).ready(function(){
           break;
       };
     }
-
     for (var i=0;i<coor.length;i++){
       $('.'+field+'[data-row='+coor[i].row+']').find('.'+field+'[data-col='+coor[i].col+']').css('background',tocolor);
     }
   }
+
 
   function colorstorefield(){
     if(tetris.storefield!==undefined){
@@ -301,6 +310,7 @@ $(document).ready(function(){
           tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
          }
         break;
+
       case 'left':
         tetris.origin.col--;
         tetris.currentcoor=translateshape(tetris.currshape,tetris.origin);
@@ -493,6 +503,7 @@ $(document).ready(function(){
     var remove=0;
 
     for (var row = 0; row < field.length; row++) {
+
       var countCells = 0;
       for (var col = 0; col < field[row].length; col++) {
         countCells += field[row][col] ? 1 : 0; //check each col, if not null, count+1
@@ -505,6 +516,7 @@ $(document).ready(function(){
           $('#linesdone').text(tetris.lines);
           remove=1;
         }
+
       }
     }
     if (remove===1){ //loop through the rows to be deleted //[18] -->row full
@@ -649,21 +661,26 @@ $(document).ready(function(){
 //          Plant Trees
 // ===========================
 
-var bottom=50;
-var left =60;
-var right=60;
 
   function planttrees(){
     if(playerA.playing===1){
-    $('.trees').append('<img src="./trees.png" style="position:absolute; bottom: '+bottom+'%; left:'+left+'px;" >');
-    left+=20;
+      $('.trees').append('<img src="./trees.png" style="position:absolute; bottom: '+bottom_a+'px; left:'+left+'px;" >');
+      left+=20;
+      if (tetris.lines%5===0) {
+        bottom_a-=10;
+        left-=90;
+      }
+
     }
 
     if(playerB.playing===1){
-    $('.trees').append('<img src="./trees_B.png" style="position:absolute;  bottom: '+bottom+'%; right:'+right+'px;" >');
-    right+=20;
+      $('.trees').append('<img src="./trees_B.png" style="position:absolute;  bottom: '+bottom_b+'px; right:'+right+'px;" >');
+      right+=20;
+      if (tetris.lines%5===0) {
+        bottom_b-=10;
+        right-=90;
+      }
     }
-
   }
 
 
