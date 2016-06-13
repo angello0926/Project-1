@@ -1,40 +1,44 @@
 $(document).ready(function(){
 
-  var gameloop = null;
-  var colorpalette=["#EE5F5B","#F89406","#FFDE49","#7A922D","#6BB18C","#36C4D0","#8B4D93"];
-  var defaultcolor="#ECF0F1";
-  var tetris={
-    scores:      0,
-    lines:       0,
-    origin:      {row:0,col:5}, //2.1 Origin
-    currentcoor: [ //2.2 Coordinates
-      {row:'',col:''},
-      {row:'',col:''},
-      {row:'',col:''},
-      {row:'',col:''}
-    ],
-    currshape:   'LR', //2.3 Shapes
-    nextshape:   '', //2.3 Shapes
-    storefield:  [], //create an array to store moves
-    playfield:   {row:20,col:10}, //define field
-    nextfield:   {row:5,col:5} //define field
+  // ==================
+  //  Global Variables
+  // ==================
+
+  var gameloop            = null;
+  var colorpalette        = ["#EE5F5B","#F89406","#FFDE49","#7A922D","#6BB18C","#36C4D0","#8B4D93"];
+  var defaultcolor        = "#ECF0F1";
+  var tetris              = {
+    scores:               0,
+    lines:                0,
+    origin:               {row:0,col:5},
+    currentcoor:          [
+                            {row:'',col:''},
+                            {row:'',col:''},
+                            {row:'',col:''},
+                            {row:'',col:''}
+                          ],
+    currshape:            'LR',
+    nextshape:            '',
+    storefield:           [],
+    playfield:            {row:20,col:10},
+    nextfield:            {row:5,col:5}
   };
 
-  var playerA={
-    scores: 0,
-    lines: 0,
-    playing: 0
+  var playerA              = {
+    scores:                0,
+    lines:                 0,
+    playing:               0
+                           };
+
+  var playerB              = {
+    scores:                0,
+    lines:                 0,
+    playing:               0
   };
 
-  var playerB={
-    scores: 0,
-    lines: 0,
-    playing:0
-  };
-
-  var turn=0;
-  var gameover=0;
-  var winner='';
+  var turn                 = 0 ;
+  var gameover             = 0 ;
+  var winner               = '' ;
 
   // ==================
   //       Music
@@ -42,19 +46,19 @@ $(document).ready(function(){
 
  var x = document.getElementById("bgmusic");
 
-  function playAudio() {
+ function playAudio() {
     x.loop=true;
     x.play();
   }
 
-  function stopAudio() {
+ function stopAudio() {
     x.pause();
   }
-  //1.3 Draw field
 
-  // ==================
-  //       Game
-  // ==================
+  // ===========================
+  //       Create Fields
+  // ===========================
+
   function grid(fieldcoor,field){
     for (var i=0;i<fieldcoor.row;i++){
       $('#'+field).append('<tr class='+field+' data-row='+i+'></tr>'); //define row
@@ -74,23 +78,42 @@ $(document).ready(function(){
     }
   }
 
-  // 2.3.1 7 types of shapes
-  // 7 types of shapes and its coordinate (take in the origin and the shape, return 4 coordinates in an array)
-  function translateshape(shape,origin){
-    switch(shape){
-      case 'LR':
-        return [{row:origin.row,col:origin.col},
-                {row:origin.row+1,col:origin.col},
-                {row:origin.row,col:origin.col+2},
-                {row:origin.row,col:origin.col+1}];
+  // ===========================
+  //           Shapes
+  // ===========================
+  function coordinates(arrayrow,arraycol){
+    return [{row:origin.row+arrayrow[0],col:origin.col+arraycol[0]},
+            {row:origin.row+arrayrow[1],col:origin.col+arraycol[1]},
+            {row:origin.row+arrayrow[2],col:origin.col+arraycol[2]},
+            {row:origin.row+arrayrow[3],col:origin.col+arraycol[3]}];
+  }
 
-        break;
+  function translateshape(shape,origin){
+    var arrayrow=[];
+    var arraycol=[];
+    var temp=[
+              {row:'',col:''},
+              {row:'',col:''},
+              {row:'',col:''},
+              {row:'',col:''}];
+
+    switch(shape){
+
+      case 'LR':
+          arrayrow=[0,1,0,0];
+          arraycol=[0,0,2,1];
+          temp=coordinates(arrayrow,arraycol);
+          return temp;
+      break;
+
       case 'LR90':
-        return [{row:origin.row,col:origin.col},
-                {row:origin.row,col:origin.col-1},
-                {row:origin.row+1,col:origin.col},
-                {row:origin.row+2,col:origin.col}];
-        break;
+          arrayrow=[0,0,+1,0];
+          arraycol=[0,-1,+2,0];
+          temp=coordinates(arrayrow,arraycol);
+          return temp;
+
+      break;
+
       case 'LR180':
         return [ {row:origin.row,col:origin.col},
                 {row:origin.row-1,col:origin.col},
@@ -193,10 +216,10 @@ $(document).ready(function(){
                 {row:origin.row+1,col:origin.col+1},
                 {row:origin.row,col:origin.col+1}];
         break;
-    };
+    }
   }
 
-  //2.3.2 Randomize the shapes
+
   function randomshapes(){
     var choice=Math.floor(Math.random()*7);
     var shapesoptions=['LR','LL','I','O','T','ZL','ZR'];
@@ -204,8 +227,9 @@ $(document).ready(function(){
     return shapesoptions[choice];
   }
 
-  //2.4 Fill Color
-  //2.4.1 Take in the coordinates and color , change the respective coordinates's css attributes.
+  // ===========================
+  //          Coloring
+  // ===========================
   function fillshape(shape,coor,color,field){
     var tocolor='';
     if(color!==true){ //when color is not '';
@@ -238,8 +262,6 @@ $(document).ready(function(){
       $('.'+field+'[data-row='+coor[i].row+']').find('.'+field+'[data-col='+coor[i].col+']').css('background',tocolor);
     }
   }
-
-
 
   function colorstorefield(){
     if(tetris.storefield!==undefined){
@@ -275,8 +297,10 @@ $(document).ready(function(){
       }
     }
   }
-  //3. Tetriminos Movement
-  //3.1 move Right/Left
+
+  // ===========================
+  //       Movement
+  // ===========================
   function move (direction){
     fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
     switch(direction){
@@ -301,8 +325,6 @@ $(document).ready(function(){
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield"); //fill color
   }
 
-  //3.2 Rotate
-  //3.2.1 Rotate based on the shapes rotation
   function rotate(){
     fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
     var originalshape = tetris.currshape;
@@ -365,7 +387,6 @@ $(document).ready(function(){
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   }
 
-  //3.3 Down
   function down(){
     checkend ();
     fillshape(tetris.currshape,tetris.currentcoor,true,"playfield");
@@ -374,6 +395,32 @@ $(document).ready(function(){
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   }
 
+  function bindKeys(){
+    $(document).keydown(function(e){
+
+      if (e.keyCode===40){
+        e.preventDefault();
+        console.log(e.keyCode)
+        down();
+        scores(5);
+      }else if (e.keyCode===39){
+        e.preventDefault();
+        console.log(e.keyCode)
+        move('right');
+      }else if (e.keyCode===37){
+        e.preventDefault();
+        console.log(e.keyCode)
+        move('left');
+      }else if (e.keyCode ===38){
+        e.preventDefault();
+        rotate();
+      }
+    });
+  }
+
+  // ===========================
+  //   Set limits for movement
+  // ===========================
   function checkend (){
     var block= false; //whether it reaches the end
     for (var i=0;i<tetris.currentcoor.length;i++){
@@ -395,7 +442,6 @@ $(document).ready(function(){
     }
   }
 
-  //whether the rotation and movement out of field
   function checkfieldlimit(){
     var limit=false;
     for (var i=0;i<tetris.currentcoor.length;i++){
@@ -405,19 +451,6 @@ $(document).ready(function(){
     };
 
     return limit;
-  }
-
-  function storeshape(currentcoor){
-    for (var i=0; i<currentcoor.length; i++){
-      var coor   = currentcoor[i];
-      var row    = coor.row;
-      var col    = coor.col;
-      tetris.storefield[row][col] = tetris.currshape;
-      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass('occupy');
-      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass(tetris.currshape);
-    }
-    colorstorefield();
-    checkgameover();
   }
 
   function detectdown(currentcoor){
@@ -447,118 +480,23 @@ $(document).ready(function(){
    return limit;
   }
 
-
-  function shownextmove(nextshape){
-    var origin= {row:2,col:2};
-    var nextcoord = [
-      {row:'',col:''},
-      {row:'',col:''},
-      {row:'',col:''},
-      {row:'',col:''}
-    ];
-    $('.nextfield').css('background','#ECF0F1');
-    nextcoord=translateshape(nextshape,origin);
-    fillshape(nextshape,nextcoord,false,"nextfield");
-  }
-
-  function scores(scores){
-    tetris.scores+=scores;
-    $('#scores').text(tetris.scores);
-
-  }
-
-  function startInterval(){
-    gameloop = setInterval(function(){
-      down();
-    },600);
-  }
-
-  function stopInterval(){
-    clearInterval(gameloop);
-  }
-
-  function bindKeys(){
-    $(document).keydown(function(e){
-
-      if (e.keyCode===40){
-        e.preventDefault();
-        console.log(e.keyCode)
-        down();
-        scores(5);
-      }else if (e.keyCode===39){
-        e.preventDefault();
-        console.log(e.keyCode)
-        move('right');
-      }else if (e.keyCode===37){
-        e.preventDefault();
-        console.log(e.keyCode)
-        move('left');
-      }else if (e.keyCode ===38){
-        e.preventDefault();
-        rotate();
-      }
-    });
-  }
-
-  function checkgameover(){
-    var gameover=0;
-    for (var i=0;i<tetris.storefield[0].length;i++){
-      if (tetris.storefield[0][i]!==null&&tetris.storefield[1][i]!==null){
-        gameover=1;
-      }
+  function storeshape(currentcoor){
+    for (var i=0; i<currentcoor.length; i++){
+      var coor   = currentcoor[i];
+      var row    = coor.row;
+      var col    = coor.col;
+      tetris.storefield[row][col] = tetris.currshape;
+      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass('occupy');
+      $('.playfield[data-row='+row+']').find('.playfield[data-col='+col+']').addClass(tetris.currshape);
     }
-      console.log('turn='+turn);
-      if (gameover===1){
-        clearInterval(gameloop);
-        stopAudio();
-        console.log('gameover');
-        turn++;
-
-        console.log('turn='+turn);
-       if(turn===1 && playerA.playing===1){
-         $('#taketurn').modal('show');
-          playerA.scores=tetris.scores;
-          playerA.lines=tetris.lines;
-          console.log('playAscores:'+playerA.scores);
-          console.log('playAliness:'+playerA.lines);
-          playerA.playing=0;
-          playerB.playing=1;
-          return;
-       }else if(turn===3&&playerB.playing===1){
-          playerB.scores=tetris.scores;
-          playerB.lines=tetris.lines;
-          console.log('turn='+turn);
-          console.log('playAscores:'+playerB.scores);
-          console.log('playAliness:'+playerB.lines);
-          playerB.playing=0;
-        }
-        resetvalue();
-        setinitialshapes();
-     if(turn===3 && playerB.playing==0 && playerA.playing===0){
-      hidegame();
-      $('button').hide();
-      $('.hide').removeClass('hide');
-      winners();
-      $('.trees').addClass('hide');
-      return;
-    }
-  }
+    colorstorefield();
+    checkgameover();
   }
 
-  function winners(){
-    if (playerA.lines>playerB.lines){
-      winner= "Player A";
-    }else if (playerB.lines>playerA.lines){
-       winner= "Player B";
-    }else{
-      winner="NO ONE";
-    }
-      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player A: </h4></div>");
-      $('.endgame').append("<div class='end number'>"+playerA.lines+'</div>');
-      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player B: </h4></div>");
-      $('.endgame').append("<div class='end number'>"+playerB.lines+'</div>');
-      $('.endgame').append("<div class='end winner'><h4><span>"+winner+"</span> WINS!</h4></div>");
-  }
+
+// ===========================
+//         Clear Lines
+// ===========================
 
   function clearlines(){
     var field = tetris.storefield;
@@ -608,10 +546,119 @@ $(document).ready(function(){
       colorstorefield();
     }
   }
-var bottom=3;
-var left =40;
-var right=40;
 
+
+// ===========================
+//        Show next move
+// ===========================
+  function shownextmove(nextshape){
+    var origin= {row:2,col:2};
+    var nextcoord = [
+      {row:'',col:''},
+      {row:'',col:''},
+      {row:'',col:''},
+      {row:'',col:''}
+    ];
+    $('.nextfield').css('background','#ECF0F1');
+    nextcoord=translateshape(nextshape,origin);
+    fillshape(nextshape,nextcoord,false,"nextfield");
+  }
+
+// ===========================
+//        Check winners
+// ===========================
+
+  function winners(){
+    if (playerA.lines>playerB.lines){
+      winner= "Player A";
+    }else if (playerB.lines>playerA.lines){
+       winner= "Player B";
+    }else{
+      winner="NO ONE";
+    }
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player A: </h4></div>");
+      $('.endgame').append("<div class='end number'>"+playerA.lines+'</div>');
+      $('.endgame').append("<div class='end'><h4> No. of trees planted by Player B: </h4></div>");
+      $('.endgame').append("<div class='end number'>"+playerB.lines+'</div>');
+      $('.endgame').append("<div class='end winner'><h4><span>"+winner+"</span> WINS!</h4></div>");
+  }
+
+  function scores(scores){
+    tetris.scores+=scores;
+    $('#scores').text(tetris.scores);
+  }
+
+// ===========================
+//          Gameloop
+// ===========================
+  function startInterval(){
+    gameloop = setInterval(function(){
+      down();
+    },600);
+  }
+
+  function stopInterval(){
+    clearInterval(gameloop);
+  }
+
+
+
+// ===========================
+//          Gameover
+// ===========================
+
+  function checkgameover(){
+    var gameover=0;
+    for (var i=0;i<tetris.storefield[0].length;i++){
+      if (tetris.storefield[0][i]!==null&&tetris.storefield[1][i]!==null){
+        gameover=1;
+      }
+    }
+      console.log('turn='+turn);
+      if (gameover===1){
+        clearInterval(gameloop);
+        stopAudio();
+        console.log('gameover');
+        turn++;
+
+        console.log('turn='+turn);
+       if(turn===1 && playerA.playing===1){
+         $('#taketurn').modal('show');
+          playerA.scores=tetris.scores;
+          playerA.lines=tetris.lines;
+          console.log('playAscores:'+playerA.scores);
+          console.log('playAliness:'+playerA.lines);
+          playerA.playing=0;
+          playerB.playing=1;
+          return;
+       }else if(turn===3&&playerB.playing===1){
+          playerB.scores=tetris.scores;
+          playerB.lines=tetris.lines;
+          console.log('turn='+turn);
+          console.log('playAscores:'+playerB.scores);
+          console.log('playAliness:'+playerB.lines);
+          playerB.playing=0;
+        }
+        resetvalue();
+        setinitialshapes();
+     if(turn===3 && playerB.playing==0 && playerA.playing===0){
+      hidegame();
+      $('button').hide();
+      $('.hide').removeClass('hide');
+      winners();
+      $('.trees').addClass('hide');
+      return;
+    }
+  }
+  }
+
+// ===========================
+//          Plant Trees
+// ===========================
+
+var bottom=50;
+var left =60;
+var right=60;
 
   function planttrees(){
     if(playerA.playing===1){
@@ -626,6 +673,10 @@ var right=40;
 
   }
 
+
+// ===========================
+//       Show/Hide Game
+// ===========================
   function hidegame(){
     $('.playfield').hide();
     $('.info').hide();
@@ -637,6 +688,10 @@ var right=40;
     $('.info').show();
     $('.nextfield').show();
   }
+
+// ===========================
+//       Restart
+// ===========================
 
   function resetvalue(){
     tetris={
@@ -673,10 +728,13 @@ var right=40;
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   }
 
+// ===========================
+//       Start Game
+// ===========================
   function startGame(){
     $('button').show();
     $('[data-toggle="tooltip"]').tooltip();
-    $( "button" ).click(function(){
+    $( ".startgame" ).click(function(){
       if (playerA.playing===1){
         $('#player').text('Player A');
       }
@@ -690,6 +748,7 @@ var right=40;
       showgame();
       startInterval();
       $('.btn-danger').hide();
+      $('.btn-info').hide();
     });
     playerA.playing=1;
     window.tetris = tetris;
@@ -698,6 +757,6 @@ var right=40;
     // set up the initial shape
     hidegame();
   }
+
   startGame();
 });
-
