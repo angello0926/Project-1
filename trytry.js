@@ -549,6 +549,10 @@ $(document).ready(function(){
 
 
 // ===========================
+
+
+
+// ===========================
 //        Show next move
 // ===========================
   function shownextmove(nextshape){
@@ -760,4 +764,3 @@ var right=60;
 
   startGame();
 });
-
