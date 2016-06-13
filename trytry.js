@@ -646,9 +646,6 @@ $(document).ready(function(){
 //          Plant Trees
 // ===========================
 
-var bottom=50;
-var left =60;
-var right=60;
 
   function planttrees(){
     if(playerA.playing===1){
