@@ -39,6 +39,7 @@ $(document).ready(function(){
   var turn                 = 0 ;
   var gameover             = 0 ;
   var winner               = '' ;
+
   var bottom_a             = -10 ;
   var bottom_b             = -10 ;
   var left                 = 30 ;
@@ -59,8 +60,6 @@ $(document).ready(function(){
  function stopAudio() {
     x.pause();
   }
-
-
 
   // ===========================
   //       Create Fields
@@ -89,12 +88,8 @@ $(document).ready(function(){
   //           Shapes
   // ===========================
 
-  function translateshape(shape,origin){
-    var arrayrow=[];
-    var arraycol=[];
-
+    function translateshape(shape,origin){
     switch(shape){
-
       case 'LR':
         return [{row:origin.row,col:origin.col},
                 {row:origin.row+1,col:origin.col},
@@ -102,14 +97,12 @@ $(document).ready(function(){
                 {row:origin.row,col:origin.col+1}];
 
         break;
-
-       case 'LR90':
+      case 'LR90':
         return [{row:origin.row,col:origin.col},
                 {row:origin.row,col:origin.col-1},
                 {row:origin.row+1,col:origin.col},
                 {row:origin.row+2,col:origin.col}];
         break;
-
       case 'LR180':
         return [ {row:origin.row,col:origin.col},
                 {row:origin.row-1,col:origin.col},
@@ -226,8 +219,6 @@ $(document).ready(function(){
   // ===========================
   //          Coloring
   // ===========================
-
-
   function fillshape(shape,coor,color,field){
     var tocolor='';
     if(color!==true){ //when color is not '';
@@ -259,7 +250,6 @@ $(document).ready(function(){
       $('.'+field+'[data-row='+coor[i].row+']').find('.'+field+'[data-col='+coor[i].col+']').css('background',tocolor);
     }
   }
-
 
   function colorstorefield(){
     if(tetris.storefield!==undefined){
@@ -548,11 +538,6 @@ $(document).ready(function(){
     }
   }
 
-
-// ===========================
-
-
-
 // ===========================
 //        Show next move
 // ===========================
@@ -661,6 +646,9 @@ $(document).ready(function(){
 //          Plant Trees
 // ===========================
 
+var bottom=50;
+var left =60;
+var right=60;
 
   function planttrees(){
     if(playerA.playing===1){
@@ -772,3 +760,4 @@ $(document).ready(function(){
   startGame();
 
   });
+
