@@ -1,9 +1,50 @@
 $(document).ready(function(){
+// ===========================
+//       Start Game
+// ===========================
+  function startGame(){
+    $('button').show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $( ".startgame" ).click(function(){
+      if (playerA.playing===1){
+        $('#player').text('Player A');
+      }
+      if (playerB.playing===1){
+        $('#player').text('Player B');
+      }
+
+<<<<<<< HEAD
+  // ==================
+  //  Global Variables
+  // ==================
+
+=======
+      resetvalue();
+      setinitialshapes();
+      playAudio();
+      showgame();
+      startInterval();
+      $('.btn-danger').hide();
+      $('.btn-info').hide();
+    });
+    playerA.playing=1;
+    window.tetris = tetris;
+    // bind keys
+    bindKeys();
+    // set up the initial shape
+    hidegame();
+  }
+
+  startGame();
+
+
+  });
 
   // ==================
   //  Global Variables
   // ==================
 
+>>>>>>> master
   var gameloop            = null;
   var colorpalette        = ["#EE5F5B","#F89406","#FFDE49","#7A922D","#6BB18C","#36C4D0","#8B4D93"];
   var defaultcolor        = "#ECF0F1";
@@ -81,27 +122,38 @@ $(document).ready(function(){
   // ===========================
   //           Shapes
   // ===========================
+  function coordinates(arrayrow,arraycol){
+    return [{row:origin.row+arrayrow[0],col:origin.col+arraycol[0]},
+            {row:origin.row+arrayrow[1],col:origin.col+arraycol[1]},
+            {row:origin.row+arrayrow[2],col:origin.col+arraycol[2]},
+            {row:origin.row+arrayrow[3],col:origin.col+arraycol[3]}];
+  }
 
   function translateshape(shape,origin){
     var arrayrow=[];
     var arraycol=[];
+    var temp=[
+              {row:'',col:''},
+              {row:'',col:''},
+              {row:'',col:''},
+              {row:'',col:''}];
 
     switch(shape){
 
       case 'LR':
-        return [{row:origin.row,col:origin.col},
-                {row:origin.row+1,col:origin.col},
-                {row:origin.row,col:origin.col+2},
-                {row:origin.row,col:origin.col+1}];
+          arrayrow=[0,1,0,0];
+          arraycol=[0,0,2,1];
+          temp=coordinates(arrayrow,arraycol);
+          return temp;
+      break;
 
-        break;
+      case 'LR90':
+          arrayrow=[0,0,+1,0];
+          arraycol=[0,-1,+2,0];
+          temp=coordinates(arrayrow,arraycol);
+          return temp;
 
-       case 'LR90':
-        return [{row:origin.row,col:origin.col},
-                {row:origin.row,col:origin.col-1},
-                {row:origin.row+1,col:origin.col},
-                {row:origin.row+2,col:origin.col}];
-        break;
+      break;
 
       case 'LR180':
         return [ {row:origin.row,col:origin.col},
@@ -491,6 +543,7 @@ $(document).ready(function(){
     var field = tetris.storefield;
     var rowToRemove = [];
     var remove=0;
+<<<<<<< HEAD
 
     for (var row = 0; row < field.length; row++) {
       var countCells = 0;
@@ -537,10 +590,54 @@ $(document).ready(function(){
   }
 
 
-// ===========================
+=======
+
+    for (var row = 0; row < field.length; row++) {
+      var countCells = 0;
+      for (var col = 0; col < field[row].length; col++) {
+        countCells += field[row][col] ? 1 : 0; //check each col, if not null, count+1
+        if (countCells === tetris.playfield.col){ //if count=10, row is full
+          rowToRemove.push(row); //store the full row into the rowToRemove arr
+          console.log(rowToRemove);
+          tetris.lines++;
+          planttrees();
+          scores(10);
+          $('#linesdone').text(tetris.lines);
+          remove=1;
+        }
+      }
+    }
+    if (remove===1){ //loop through the rows to be deleted //[18] -->row full
+      for (var i=0; i<rowToRemove.length;i++){ // i=0
+        tetris.storefield.splice(rowToRemove[i],1); //remove the row in the stored field
+       //for each col, change back the class field to default
+        var rowadd = [];
+        for (var j=0;j<tetris.playfield.col;j++){
+          rowadd.push(null);
+        }
+        tetris.storefield.splice(0,0,rowadd);
+      }
+
+      for (var i=0;i<tetris.storefield.length;i++){
+        for (var j=0;j<tetris.storefield[i].length;j++){
+          $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').removeClass().addClass('playfield');
+          var classname=tetris.storefield[i][j];
+          if(classname!==null) $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').removeClass().addClass('playfield occupy '+classname);
+        }
+      }
+      console.log(tetris.storefield);
+      for (var i=0;i<tetris.storefield.length;i++){
+        for (var j=0;j<tetris.storefield[i].length;j++){
+          $('.playfield[data-row='+i+']').find('.playfield[data-col='+j+']').css('background',defaultcolor);
+        }
+      }
+
+      colorstorefield();
+    }
+  }
 
 
-
+>>>>>>> master
 // ===========================
 //        Show next move
 // ===========================
@@ -721,7 +818,7 @@ var right=60;
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   }
 
-
+<<<<<<< HEAD
 // ===========================
 //       Start Game
 // ===========================
@@ -753,5 +850,7 @@ var right=60;
   }
 
   startGame();
+});
 
-  });
+=======
+>>>>>>> master
