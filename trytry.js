@@ -1,4 +1,38 @@
 $(document).ready(function(){
+// ===========================
+//       Start Game
+// ===========================
+  function startGame(){
+    $('button').show();
+    $('[data-toggle="tooltip"]').tooltip();
+    $( ".startgame" ).click(function(){
+      if (playerA.playing===1){
+        $('#player').text('Player A');
+      }
+      if (playerB.playing===1){
+        $('#player').text('Player B');
+      }
+
+      resetvalue();
+      setinitialshapes();
+      playAudio();
+      showgame();
+      startInterval();
+      $('.btn-danger').hide();
+      $('.btn-info').hide();
+    });
+    playerA.playing=1;
+    window.tetris = tetris;
+    // bind keys
+    bindKeys();
+    // set up the initial shape
+    hidegame();
+  }
+
+  startGame();
+
+
+  });
 
   // ==================
   //  Global Variables
@@ -728,35 +762,3 @@ var right=60;
     fillshape(tetris.currshape,tetris.currentcoor,false,"playfield");
   }
 
-// ===========================
-//       Start Game
-// ===========================
-  function startGame(){
-    $('button').show();
-    $('[data-toggle="tooltip"]').tooltip();
-    $( ".startgame" ).click(function(){
-      if (playerA.playing===1){
-        $('#player').text('Player A');
-      }
-      if (playerB.playing===1){
-        $('#player').text('Player B');
-      }
-
-      resetvalue();
-      setinitialshapes();
-      playAudio();
-      showgame();
-      startInterval();
-      $('.btn-danger').hide();
-      $('.btn-info').hide();
-    });
-    playerA.playing=1;
-    window.tetris = tetris;
-    // bind keys
-    bindKeys();
-    // set up the initial shape
-    hidegame();
-  }
-
-  startGame();
-});
