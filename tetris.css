@@ -31,15 +31,13 @@ td {
 
 }
 
-.bg{
-   background-image: url('／background.svg');
+.body{
+   background-image: url('./background.svg');
    background-size: cover;
    background-position: fixed;
    position:relative;
    background-repeat: no-repeat;
    background-color: #73a843;
-   margin-top: 50px;
-   padding-bottom: 100px;
 
 }
 
