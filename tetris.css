@@ -31,7 +31,7 @@ td {
 
 }
 
-.body{
+body{
    background-image: url('/background.svg');
    background-size: cover;
    background-position: fixed;
