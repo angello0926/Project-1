@@ -1,0 +1,125 @@
+td {
+  background: #ECF0F1;
+  width: 20px;
+  height: 20px;
+  border: solid 2px white ;
+
+}
+
+#playfield{
+  width: auto;
+  height: auto;
+  margin: 120px 0px auto;
+
+}
+
+#nextfield{
+ width: auto;
+  height: auto;
+  border: 5px solid #ECF0F1;
+}
+
+
+
+.format{
+  height:120px;
+}
+
+.font{
+  font-family: 'Arya', sans-serif;
+  color: 'black';
+
+}
+
+.bg{
+   background-image: url('../img/background.svg');
+   background-size: cover;
+   background-position: fixed;
+   position:relative;
+   background-repeat: no-repeat;
+   background-color: #73a843;
+   margin-top: 50px;
+   padding-bottom: 100px;
+
+}
+
+.info{
+   background: #ECF0F1;
+   margin:5px;
+   font: white;
+
+}
+
+
+
+.button{
+  font: 36px;
+  margin: 10px auto;
+  align-content: center;
+
+
+}
+
+
+.btn-danger{
+width: 400px;
+height:50px;
+
+}
+
+.btn{
+    font-size:24px;
+    text-transform: uppercase;
+}
+
+h2{
+  text-align: center;
+  color: #42787A;
+  text-transform: uppercase;
+}
+
+.end{
+
+  background: #ECF0F1;
+  filter: alpha(opacity=70);
+  font-family: 'Arya', sans-serif;
+  text-transform: uppercase;
+  padding: 5px 10px 5px 10px;
+  font-weight: bold;
+
+}
+
+.gameover{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  background: #FC575E;
+  color: white;
+}
+
+.penal-heading{
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: "Arial Black", sans-serif;
+  background: #FCB410;
+  color: white;
+}
+
+.number{
+  font-family: "Impact", sans-serif;
+  font-size: 24px;
+}
+
+.btn-info{
+  width: 400px;
+height:50px;
+}
+
+.col-sm-8{
+    clear: both;
+}
+
+.modal-content{
+  width:350px;
+  content-align:center;
+}
