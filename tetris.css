@@ -32,7 +32,7 @@ td {
 }
 
 .body{
-   background-image: url('./background.svg');
+   background-image: url('/background.svg');
    background-size: cover;
    background-position: fixed;
    position:relative;
